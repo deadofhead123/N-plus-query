@@ -26,7 +26,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
         for (OrderDetailRequest item : orderDetailRequests) {
             OrderDetailEntity newOrderDetailEntity = modelMapper.map(item, OrderDetailEntity.class);
-            newOrderDetailEntity.setOrder(orderEntity);
+            newOrderDetailEntity.setOrderId(orderEntity.getId());
             orderDetailEntities.add(newOrderDetailEntity);
         }
 

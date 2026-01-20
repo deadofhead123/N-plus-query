@@ -1,10 +1,11 @@
 package com.sweet.n_plus_one_query.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +15,4 @@ import java.util.List;
 public class OrderEntity extends BaseEntity {
     @Column(name = "address", nullable = false)
     private String address;
-
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    List<OrderDetailEntity> orderDetails;
 }
