@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface OrderDetailService {
     void createOrderDetail(OrderEntity orderEntity, List<OrderDetailRequest> orderDetailRequests);
+    void testRequiredNewPropagation();
+    void testSupportPropagation();
 }

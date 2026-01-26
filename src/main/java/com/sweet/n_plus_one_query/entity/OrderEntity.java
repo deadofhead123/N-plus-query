@@ -13,6 +13,6 @@ import lombok.Setter;
 @Table(name = "orders")
 @AttributeOverride(name = "id", column = @Column(nullable = false))
 public class OrderEntity extends BaseEntity {
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 }

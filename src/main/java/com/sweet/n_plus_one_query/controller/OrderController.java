@@ -43,4 +43,49 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
+
+    @PostMapping("/testTransactional")
+    public ResponseEntity<?> testTransactional(@RequestBody OrderRequest orderRequest) {
+        ResponseDto responseDto = new ResponseDto();
+
+        try{
+            responseDto.setMessage("Order created successfully");
+            responseDto.setData(orderService.testTransactional(orderRequest));
+            return ResponseEntity.ok(responseDto);
+        }
+        catch(Exception e){
+            responseDto.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
+        }
+    }
+
+    @PostMapping("/testSupportPropagation")
+    public ResponseEntity<?> testSupportPropagation(@RequestBody OrderRequest orderRequest) {
+        ResponseDto responseDto = new ResponseDto();
+
+        try{
+            responseDto.setMessage("Order created successfully");
+            responseDto.setData(orderService.testSupportPropagation(orderRequest));
+            return ResponseEntity.ok(responseDto);
+        }
+        catch(Exception e){
+            responseDto.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
+        }
+    }
+
+    @PostMapping("/testNotSupportedPropagation")
+    public ResponseEntity<?> testNotSupportedPropagation(@RequestBody OrderRequest orderRequest) {
+        ResponseDto responseDto = new ResponseDto();
+
+        try{
+            responseDto.setMessage("Order created successfully");
+            responseDto.setData(orderService.testNotSupportedPropagation(orderRequest));
+            return ResponseEntity.ok(responseDto);
+        }
+        catch(Exception e){
+            responseDto.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
+        }
+    }
 }
