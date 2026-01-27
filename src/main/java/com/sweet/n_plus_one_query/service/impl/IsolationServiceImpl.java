@@ -100,4 +100,40 @@ public class IsolationServiceImpl implements IsolationService {
         threadA.join();
         threadB.join();
     }
+
+    @Override
+    public void testSerializable(Long id, Long quantity) throws InterruptedException {
+        Thread threadA = new Thread(() -> {
+            try{
+                productService.updateStock(id, quantity);
+            }
+            catch (InterruptedException ie){
+                ie.printStackTrace();
+                throw new RuntimeException(ie.getMessage());
+            }
+        });
+
+        Thread threadB = new Thread(() -> {
+            try{
+//                Thread.sleep(2000);
+//                Long stock = productService.checkStock(id);
+                productService.fetchStock(id);
+//                System.out.println("Stock read by Transaction B: " + stock);
+            }
+//            catch (InterruptedException ie){
+//                ie.printStackTrace();
+//                throw new RuntimeException(ie.getMessage());
+//            }
+            catch (Exception ie){
+                ie.printStackTrace();
+                throw new RuntimeException(ie.getMessage());
+            }
+        });
+
+        threadA.start();
+        threadB.start();
+
+        threadA.join();
+        threadB.join();
+    }
 }

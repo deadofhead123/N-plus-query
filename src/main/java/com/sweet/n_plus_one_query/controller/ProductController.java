@@ -118,4 +118,20 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
+
+    @PatchMapping("/serializable/{id}")
+    public ResponseEntity<?> testSerializable(@PathVariable Long id,
+                                                @RequestParam Long quantity) {
+        ResponseDto responseDto = new ResponseDto();
+
+        try{
+            responseDto.setMessage("Serializable tested successfully");
+            isolationService.testSerializable(id, quantity);
+            return ResponseEntity.ok(responseDto);
+        }
+        catch(Exception e){
+            responseDto.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
+        }
+    }
 }

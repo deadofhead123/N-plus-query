@@ -98,7 +98,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
 //    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
 //    @Transactional(isolation = Isolation.READ_COMMITTED)
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+//    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void updateStock(Long productId, Long stock) throws InterruptedException {
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new DataNotFoundException(localizationUtil.getLocalMessage(ErrorCode.Product.PRODUCT_NOT_FOUND, productId)));
@@ -116,7 +117,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
 //    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+//    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Long checkStock(Long productId) {
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new DataNotFoundException(localizationUtil.getLocalMessage(ErrorCode.Product.PRODUCT_NOT_FOUND, productId)));
@@ -125,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
 
     // Transaction B: Read stock multiple times
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void fetchStock(Long productId) {
 
         // First read
