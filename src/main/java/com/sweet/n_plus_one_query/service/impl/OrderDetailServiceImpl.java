@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         orderDetailEntity.setOrderId(10L);
         orderDetailEntity.setProductName("RPG-7");
         orderDetailEntity.setQuantity(12L);
-        orderDetailEntity.setPrice(BigDecimal.valueOf(12));
+        orderDetailEntity.setPrice(12L);
         orderDetailRepository.save(orderDetailEntity);
     }
 
@@ -57,7 +56,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         orderDetailEntity.setOrderId(10L);
         orderDetailEntity.setProductName("RPG-7");
         orderDetailEntity.setQuantity(12L);
-        orderDetailEntity.setPrice(BigDecimal.valueOf(12));
+        orderDetailEntity.setPrice(12L);
 
         if(2 > 3){
             throw new TransactionalException(

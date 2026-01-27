@@ -7,8 +7,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Entity
@@ -21,8 +19,8 @@ public class OrderDetailEntity extends BaseEntity {
     @Column(name = "quantity", nullable = false)
     private Long quantity;
 
-    @Column(name = "price", nullable = false, precision = 2)
-    private BigDecimal price;
+    @Column(name = "price", nullable = false)
+    private Long price;
 
     @Column(name = "order_id")
     private Long orderId;
