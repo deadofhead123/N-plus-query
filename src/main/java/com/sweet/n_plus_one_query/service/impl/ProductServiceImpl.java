@@ -2,7 +2,9 @@ package com.sweet.n_plus_one_query.service.impl;
 
 import com.sweet.n_plus_one_query.dto.ProductDto;
 import com.sweet.n_plus_one_query.dto.request.ProductRequest;
+import com.sweet.n_plus_one_query.dto.request.ProductUpdateRequest;
 import com.sweet.n_plus_one_query.entity.ProductEntity;
+import com.sweet.n_plus_one_query.exception.DataExistedException;
 import com.sweet.n_plus_one_query.exception.DataNotFoundException;
 import com.sweet.n_plus_one_query.repository.ProductRepository;
 import com.sweet.n_plus_one_query.service.ProductService;
@@ -24,12 +26,35 @@ public class ProductServiceImpl implements ProductService {
     private final LocalizationUtil localizationUtil;
 
     @Override
+    public ProductEntity getProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new DataNotFoundException(localizationUtil.getLocalMessage(ErrorCode.Product.PRODUCT_NOT_FOUND, productId)));
+    }
+
+    @Override
     @Transactional
     public ProductDto createProduct(ProductRequest productRequest) {
+        if(productRepository.existsByName(productRequest.getName())){
+            throw new DataExistedException(
+                    localizationUtil.getLocalMessage(ErrorCode.Product.NAME_EXISTED, productRequest.getName())
+            );
+        }
+
         ProductEntity productEntity = modelMapper.map(productRequest, ProductEntity.class);
-        ProductEntity savedProductEntity = productRepository.save(productEntity);
-        entityManager.flush();
-        return modelMapper.map(savedProductEntity, ProductDto.class);
+
+        return modelMapper.map(productRepository.save(productEntity), ProductDto.class);
+    }
+
+    @Override
+    public ProductDto updateProduct(Long productId, ProductUpdateRequest productUpdateRequest) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new DataNotFoundException(localizationUtil.getLocalMessage(ErrorCode.Product.PRODUCT_NOT_FOUND, productId)));
+
+       productEntity.setQuantity(productUpdateRequest.getQuantity());
+       productEntity.setName(productUpdateRequest.getName());
+       productEntity.setPrice(productUpdateRequest.getPrice());
+
+        return modelMapper.map(productRepository.save(productEntity), ProductDto.class);
     }
 
     @Override
@@ -129,6 +154,11 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity product3 = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         System.out.println("Transaction B: Third read stock as " + product2.getQuantity());
+    }
+
+    @Override
+    public void saveProduct(ProductEntity productEntity) {
+        productRepository.save(productEntity);
     }
 
 }

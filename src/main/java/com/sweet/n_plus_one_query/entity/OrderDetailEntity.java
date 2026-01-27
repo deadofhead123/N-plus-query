@@ -24,4 +24,7 @@ public class OrderDetailEntity extends BaseEntity {
 
     @Column(name = "order_id")
     private Long orderId;
+
+    @Column(name = "product_id")
+    private Long productId;
 }

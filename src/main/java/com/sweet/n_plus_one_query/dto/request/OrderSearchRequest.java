@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderDetailRequest {
-    private Long productId;
-    private Long quantity;
+public class OrderSearchRequest {
+    String productName;
 }

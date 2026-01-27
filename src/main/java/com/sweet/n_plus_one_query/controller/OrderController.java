@@ -2,6 +2,7 @@ package com.sweet.n_plus_one_query.controller;
 
 import com.sweet.n_plus_one_query.dto.ResponseDto;
 import com.sweet.n_plus_one_query.dto.request.OrderRequest;
+import com.sweet.n_plus_one_query.dto.request.OrderSearchRequest;
 import com.sweet.n_plus_one_query.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,21 @@ public class OrderController {
         try{
             responseDto.setMessage("Order found");
             responseDto.setData(orderService.getOrderById(orderId));
+            return ResponseEntity.ok(responseDto);
+        }
+        catch(Exception e){
+            responseDto.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
+        }
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<?> getOrderByFilter(@RequestBody OrderSearchRequest orderSearchRequest) {
+        ResponseDto responseDto = new ResponseDto();
+
+        try{
+            responseDto.setMessage("Orders searched successfully");
+            responseDto.setData(orderService.getOrderByFilter(orderSearchRequest));
             return ResponseEntity.ok(responseDto);
         }
         catch(Exception e){

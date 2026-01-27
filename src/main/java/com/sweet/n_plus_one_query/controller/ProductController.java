@@ -2,6 +2,7 @@ package com.sweet.n_plus_one_query.controller;
 
 import com.sweet.n_plus_one_query.dto.ResponseDto;
 import com.sweet.n_plus_one_query.dto.request.ProductRequest;
+import com.sweet.n_plus_one_query.dto.request.ProductUpdateRequest;
 import com.sweet.n_plus_one_query.service.IsolationService;
 import com.sweet.n_plus_one_query.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,21 @@ public class ProductController {
         }
     }
 
+    @PutMapping("/{productId}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateRequest productRequest) {
+        ResponseDto responseDto = new ResponseDto();
+
+        try{
+            responseDto.setMessage("Product updated successfully");
+            responseDto.setData(productService.updateProduct(productId, productRequest));
+            return ResponseEntity.ok(responseDto);
+        }
+        catch(Exception e){
+            responseDto.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
+        }
+    }
+
     @PostMapping("/readCommittedCreate")
     public ResponseEntity<?> readCommittedCreateProduct(@RequestBody ProductRequest productRequest) {
         ResponseDto responseDto = new ResponseDto();
@@ -45,6 +61,12 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
+
+    /*
+         Viết query tìm các đơn hàng có sản phẩm theo tên sản phẩm.
+         Nhớ trả ra tên cũ, tên hiện tại của sản phẩm.
+     */
+
 
     /*
     -------- Test Isolation level

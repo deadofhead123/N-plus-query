@@ -7,5 +7,7 @@ public class ErrorCode {
 
     public class Product{
         public static final String PRODUCT_NOT_FOUND = "product.createProduct.notFound";
+        public static final String NAME_EXISTED = "product.createProduct.nameExists";
+        public static final String PRODUCT_NOT_ENOUGH_QUANTITY = "product.createOrder.notEnoughQuantity";
     }
 }

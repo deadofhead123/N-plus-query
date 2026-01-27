@@ -1,9 +1,12 @@
 package com.sweet.n_plus_one_query.service.impl;
 
 import com.sweet.n_plus_one_query.dto.projection.OrderDtoProjection;
+import com.sweet.n_plus_one_query.dto.projection.OrderSearchDtoProjection;
 import com.sweet.n_plus_one_query.dto.request.OrderRequest;
+import com.sweet.n_plus_one_query.dto.request.OrderSearchRequest;
 import com.sweet.n_plus_one_query.dto.response.OrderDetailResponse;
 import com.sweet.n_plus_one_query.dto.response.OrderResponse;
+import com.sweet.n_plus_one_query.dto.response.OrderSearchResponse;
 import com.sweet.n_plus_one_query.entity.OrderEntity;
 import com.sweet.n_plus_one_query.exception.DataNotFoundException;
 import com.sweet.n_plus_one_query.exception.TransactionalException;
@@ -123,5 +126,11 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity createdOrderEntity = orderRepository.save(orderEntity);
 
         return orderRepository.findById(createdOrderEntity.getId()).get();
+    }
+
+    @Override
+    public List<OrderSearchResponse> getOrderByFilter(OrderSearchRequest orderSearchRequest) {
+        List<OrderSearchDtoProjection> orderSearchDtoProjections = orderRepository.findByFilter(orderSearchRequest);
+        return orderSearchDtoProjections.stream().map(x -> modelMapper.map(x, OrderSearchResponse.class)).toList();
     }
 }
