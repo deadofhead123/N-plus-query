@@ -5,10 +5,15 @@ import com.sweet.n_plus_one_query.dto.request.ProductRequest;
 import com.sweet.n_plus_one_query.dto.request.ProductUpdateRequest;
 import com.sweet.n_plus_one_query.service.IsolationService;
 import com.sweet.n_plus_one_query.service.ProductService;
+import com.sweet.n_plus_one_query.util.LocalizationUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,12 +21,21 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productService;
     private final IsolationService isolationService;
+    private final LocalizationUtil localizationUtil;
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequest productRequest, BindingResult bindingResult) {
         ResponseDto responseDto = new ResponseDto();
 
         try{
+            if(bindingResult.hasErrors()){
+                List<String> errors = bindingResult.getFieldErrors()
+                        .stream()
+                        .map(x -> localizationUtil.getLocalMessage(x.getDefaultMessage())).toList(); // get code from message to create local message
+                responseDto.setError(errors);
+                return  ResponseEntity.badRequest().body(responseDto);
+            }
+
             responseDto.setMessage("Product created successfully");
             responseDto.setData(productService.createProduct(productRequest));
             return ResponseEntity.ok(responseDto);
